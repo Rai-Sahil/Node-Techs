@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Kafka Producer</title>
+</head>
+
+<body>
+    <h1>Kafka Producer</h1>
+    <form id="kafkaForm">
+        <label for="message">Enter a message:</label>
+        <input type="text" id="message" name="message" required>
+        <button type="button" id="sendMessage">Send Message to Kafka</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendMessageButton = document.getElementById('sendMessage');
+
+            sendMessageButton.addEventListener('click', () => {
+                const message = document.getElementById('message').value;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/send-message', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('message=' + encodeURIComponent(message));
+
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            console.log('Message sent to Kafka:', message);
+                            alert('Message sent to Kafka: ' + message);
+                        } else {
+                            console.error('Error sending message:', xhr.statusText);
+                            alert('Error sending message to Kafka');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
